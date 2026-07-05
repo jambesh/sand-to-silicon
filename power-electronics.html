@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Power Electronics — Sand to Silicon</title>
+<meta name="description" content="Interactive guide to power electronics: analog vs digital power, diodes, MOSFETs, IGBTs, SiC & GaN, linear regulators, buck converters with a live PWM playground, and a virtual breadboard lab." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23f5a623'/><path d='M55 20 L35 55 h13 l-8 25 L70 45 H55 Z' fill='%23070b14'/></svg>" />
+<script>
+  (function () {
+    var t = localStorage.getItem("s2s-theme");
+    if (t === "light" || (!t && window.matchMedia("(prefers-color-scheme: light)").matches)) {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  })();
+</script>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html">
+      <svg class="brand-logo" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="18" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+        <path d="M23 8 L14 22 h5 l-3 10 L26 18 h-6 Z" fill="var(--accent-2)"/>
+      </svg>
+      Sand<span class="grad">→</span>Silicon
+    </a>
+    <div class="nav-links">
+      <a href="index.html#journey">Chip Journey</a>
+      <a href="#pe-devices">Devices</a>
+      <a href="#pe-analog">Analog</a>
+      <a href="#pe-digital">Digital</a>
+      <a href="#pe-breadboard">Breadboard Lab</a>
+      <a href="ai-semiconductors.html">AI Module</a>
+      <button class="theme-toggle nav-keep" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="progress-bar" id="progressBar"></div>
+</nav>
+<nav class="journey-dots" id="journeyDots" aria-label="Section navigation"></nav>
+
+<header class="page-hero" id="top">
+  <div class="crumb"><a href="index.html">Sand → Silicon</a> / Module</div>
+  <h1>⚡ Power <span class="grad">Electronics</span></h1>
+  <p class="sub">
+    Chips that think are only half the story — something must feed them, and everything else, with clean energy.
+    Power electronics converts and controls electrical power: from the watts sipped by your phone charger to the
+    megawatts surging through an EV fast-charger. Explore the devices, the analog and digital ways to regulate
+    power, and try the circuits yourself on a virtual breadboard.
+  </p>
+</header>
+
+<main>
+
+<!-- ============ PE-1 : WHAT IS POWER ELECTRONICS ============ -->
+<section class="stage container" id="stage-pe1">
+  <div class="stage-header reveal">
+    <span class="stage-num">PE · 01 CONCEPT</span>
+    <h2>Processing Power, Not Information 🔌</h2>
+    <p class="stage-tag">Logic chips shuffle bits. Power chips shuffle joules — and the rules change completely.</p>
+  </div>
+  <div class="stage-body">
+    <div class="stage-text reveal">
+      <h3>The one big idea: the switch</h3>
+      <p>A resistor that drops voltage <em>burns</em> the difference as heat. A <strong>perfect switch</strong> wastes nothing: fully ON it has no voltage across it, fully OFF it has no current through it — either way, <strong>P&nbsp;=&nbsp;V·I&nbsp;≈&nbsp;0</strong>. All of modern power electronics is the art of switching fast and cleaning up the result with inductors and capacitors.</p>
+      <div class="formula">Ideal switch: ON → V≈0 · OFF → I≈0 · either way <b>P = V·I ≈ 0</b></div>
+      <h3>Analog vs digital power</h3>
+      <p><strong>Analog (linear) power</strong> regulates continuously — a transistor acts as a smart variable resistor (LDOs, amplifier output stages, precision references). Silent and clean, but it pays in heat.
+      <strong>Digital (switching) power</strong> chops the input ON/OFF thousands to millions of times per second and filters the average — converters, inverters, motor drives. It's 90–98% efficient, and today the control loop itself is usually digital too: a microcontroller or DSP computing PWM duty cycles in real time.</p>
+      <ol class="step-list">
+        <li><strong>Convert</strong> — AC↔DC, DC↔DC, DC↔AC, AC↔AC: the four conversion families.</li>
+        <li><strong>Regulate</strong> — hold voltage/current steady as load and input swing.</li>
+        <li><strong>Protect</strong> — limit inrush, clamp spikes, shut down on faults.</li>
+        <li><strong>Control</strong> — analog feedback or digital loops (PWM, PID, and lately AI).</li>
+      </ol>
+      <div class="term-chips">
+        <span class="chip">Rectifier (AC→DC)</span><span class="chip">DC-DC converter</span><span class="chip">Inverter (DC→AC)</span><span class="chip">PWM</span><span class="chip">Duty cycle</span><span class="chip">Efficiency η</span>
+      </div>
+      <div class="fact-card"><div class="fc-title">💡 It's everywhere</div>
+        Between a power plant and your laptop CPU, electricity is converted <strong>4–6 times</strong>. Each conversion loses a few percent — which is why a 1% efficiency gain across the industry is worth entire power stations.
+      </div>
+    </div>
+    <figure class="stage-figure reveal">
+      <svg class="dgm" viewBox="0 0 460 350" role="img" aria-label="Power conversion chain from grid to chip">
+        <text x="230" y="24" text-anchor="middle" font-size="12" class="t-strong">the journey of a joule: grid → chip</text>
+        <!-- chain -->
+        <g>
+          <rect x="16" y="50" width="90" height="56" rx="10" fill="var(--dgm-fill)" stroke="var(--dgm-stroke)"/>
+          <text x="61" y="74" text-anchor="middle" font-size="11" class="t-strong">Grid AC</text>
+          <text x="61" y="92" text-anchor="middle" font-size="10">230/110 V · 50/60 Hz</text>
+          <path d="M106 78 H 136" stroke="var(--accent)" stroke-width="2.2" class="anim-flow"/>
+          <rect x="140" y="50" width="90" height="56" rx="10" fill="var(--dgm-fill)" stroke="var(--accent-2)" stroke-width="2"/>
+          <text x="185" y="74" text-anchor="middle" font-size="11" class="t-amber">Rectifier</text>
+          <text x="185" y="92" text-anchor="middle" font-size="10">AC → DC</text>
+          <path d="M230 78 H 260" stroke="var(--accent)" stroke-width="2.2" class="anim-flow"/>
+          <rect x="264" y="50" width="90" height="56" rx="10" fill="var(--dgm-fill)" stroke="var(--accent-2)" stroke-width="2"/>
+          <text x="309" y="74" text-anchor="middle" font-size="11" class="t-amber">PFC boost</text>
+          <text x="309" y="92" text-anchor="middle" font-size="10">shape current</text>
+          <path d="M354 78 H 384" stroke="var(--accent)" stroke-width="2.2" class="anim-flow"/>
+          <rect x="388" y="50" width="60" height="56" rx="10" fill="var(--dgm-fill)" stroke="var(--accent-2)" stroke-width="2"/>
+          <text x="418" y="74" text-anchor="middle" font-size="10.5" class="t-amber">Isolated</text>
+          <text x="418" y="90" text-anchor="middle" font-size="10.5" class="t-amber">DC-DC</text>
+        </g>
+        <path d="M418 106 C 418 140 380 146 340 148" fill="none" stroke="var(--accent)" stroke-width="2.2" class="anim-flow"/>
+        <g>
+          <rect x="220" y="126" width="116" height="48" rx="10" fill="var(--dgm-fill)" stroke="var(--accent-2)" stroke-width="2"/>
+          <text x="278" y="146" text-anchor="middle" font-size="11" class="t-amber">Buck 12 V → 1 V</text>
+          <text x="278" y="163" text-anchor="middle" font-size="10">on the motherboard (VRM)</text>
+        </g>
+        <path d="M216 150 H 176" stroke="var(--accent)" stroke-width="2.2" class="anim-flow"/>
+        <g>
+          <rect x="96" y="126" width="76" height="48" rx="10" fill="var(--dgm-fill)" stroke="var(--dgm-si)" stroke-width="2.5"/>
+          <text x="134" y="146" text-anchor="middle" font-size="11" class="t-accent">CPU / GPU</text>
+          <text x="134" y="163" text-anchor="middle" font-size="10">1 V · 100+ A!</text>
+        </g>
+        <!-- analog vs digital panel -->
+        <g>
+          <rect x="16" y="206" width="208" height="128" rx="14" fill="var(--dgm-fill)" stroke="var(--dgm-stroke)"/>
+          <text x="120" y="230" text-anchor="middle" font-size="11.5" class="t-strong">Analog (linear)</text>
+          <path d="M40 268 h30 l6 -12 l6 12 h30" fill="none" stroke="var(--dgm-label)" stroke-width="2"/>
+          <path d="M130 268 h60" stroke="var(--dgm-label)" stroke-width="2"/>
+          <text x="120" y="296" text-anchor="middle" font-size="9.5">transistor = variable resistor</text>
+          <text x="120" y="312" text-anchor="middle" font-size="9.5">smooth & silent · heat = wasted power</text>
+        </g>
+        <g>
+          <rect x="236" y="206" width="208" height="128" rx="14" fill="var(--dgm-fill)" stroke="var(--dgm-si)" stroke-width="2"/>
+          <text x="340" y="230" text-anchor="middle" font-size="11.5" class="t-accent">Digital (switching)</text>
+          <path d="M258 276 h18 v-20 h18 v20 h18 v-20 h18 v20 h18 v-20 h18 v20 h16" fill="none" stroke="var(--dgm-si)" stroke-width="2.2" class="anim-beam"/>
+          <text x="340" y="296" text-anchor="middle" font-size="9.5">chop fast, filter the average</text>
+          <text x="340" y="312" text-anchor="middle" font-size="9.5">90–98% efficient · needs L & C filters</text>
+        </g>
+      </svg>
+      <figcaption>Four to six conversions between power plant and processor — each one a power-electronics circuit.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ PE-2 : DEVICES ============ -->
+<section class="stage container" id="pe-devices">
+  <div class="stage-header reveal">
+    <span class="stage-num">PE · 02 DEVICES</span>
+    <h2>The Switch Toolbox — Diode to GaN 🧰</h2>
+    <p class="stage-tag">Every power circuit is built from a handful of semiconductor switches. Meet the family.</p>
+  </div>
+  <div class="stage-body rev">
+    <figure class="stage-figure reveal">
+      <svg class="dgm" viewBox="0 0 460 330" role="img" aria-label="Device application map: switching frequency vs power level" id="deviceMap">
+        <line x1="60" y1="270" x2="440" y2="270" stroke="var(--dgm-stroke)" stroke-width="2"/>
+        <line x1="60" y1="270" x2="60" y2="30" stroke="var(--dgm-stroke)" stroke-width="2"/>
+        <text x="250" y="304" text-anchor="middle" font-size="11">switching frequency → (kHz → MHz)</text>
+        <text x="28" y="150" text-anchor="middle" font-size="11" transform="rotate(-90 28 150)">power level → (W → MW)</text>
+        <!-- regions -->
+        <g style="cursor:pointer" class="dev-region" data-dev="igbt">
+          <ellipse cx="130" cy="80" rx="62" ry="42" fill="var(--accent-4)" opacity="0.28"/>
+          <text x="130" y="76" text-anchor="middle" font-size="12" class="t-strong">IGBT</text>
+          <text x="130" y="92" text-anchor="middle" font-size="9">kW–MW · ≤ 20 kHz</text>
+        </g>
+        <g style="cursor:pointer" class="dev-region" data-dev="sic">
+          <ellipse cx="250" cy="110" rx="66" ry="46" fill="var(--dgm-oxide)" opacity="0.3"/>
+          <text x="250" y="106" text-anchor="middle" font-size="12" class="t-strong">SiC MOSFET</text>
+          <text x="250" y="122" text-anchor="middle" font-size="9">kW–100s kW · ~100 kHz</text>
+        </g>
+        <g style="cursor:pointer" class="dev-region" data-dev="simos">
+          <ellipse cx="210" cy="212" rx="80" ry="40" fill="var(--dgm-si)" opacity="0.28"/>
+          <text x="210" y="208" text-anchor="middle" font-size="12" class="t-strong">Si MOSFET</text>
+          <text x="210" y="224" text-anchor="middle" font-size="9">W–kW · ≤ ~1 MHz</text>
+        </g>
+        <g style="cursor:pointer" class="dev-region" data-dev="gan">
+          <ellipse cx="368" cy="190" rx="60" ry="44" fill="var(--accent-2)" opacity="0.3"/>
+          <text x="368" y="186" text-anchor="middle" font-size="12" class="t-strong">GaN</text>
+          <text x="368" y="202" text-anchor="middle" font-size="9">W–kW · MHz+</text>
+        </g>
+      </svg>
+      <div class="verdict" id="devInfo">
+        <div class="v-title">👆 Tap a device region</div>
+        <span id="devInfoText">Each bubble shows where a switch family rules. Click one to see how it works and where you've met it.</span>
+      </div>
+      <figcaption>The power-frequency map: pick the right switch for the job.</figcaption>
+    </figure>
+    <div class="stage-text reveal">
+      <h3>Four switches to rule them all</h3>
+      <p><strong>Diode</strong> — a one-way valve; conducts forward, blocks reverse. The simplest rectifier.
+      <strong>Si MOSFET</strong> — a voltage-controlled switch: charge the gate and it conducts. Fast, easy to drive, king below ~650 V.
+      <strong>IGBT</strong> — a hybrid built for brute force: handles thousands of volts and amps, but switches slowly. Trains, wind turbines, industrial drives.
+      <strong>Wide-bandgap (SiC & GaN)</strong> — new materials whose atoms grip electrons ~3× harder than silicon, so devices can be thinner, faster and run hotter with less loss.</p>
+      <h3>Why wide-bandgap changes everything</h3>
+      <p>Higher switching frequency means <strong>smaller inductors and capacitors</strong> — that's why a 65 W GaN charger is a third the size of the old silicon brick. SiC survives 1,200+ V with tiny losses — that's why EVs moving to 800 V batteries put SiC in the traction inverter and gain ~5% driving range for free.</p>
+      <div class="term-chips">
+        <span class="chip">Diode</span><span class="chip">MOSFET</span><span class="chip">IGBT</span><span class="chip">SiC (silicon carbide)</span><span class="chip">GaN (gallium nitride)</span><span class="chip">Bandgap</span><span class="chip">R<sub>DS(on)</sub></span>
+      </div>
+      <div class="fact-card"><div class="fc-title">💡 Fab connection</div>
+        SiC wafers are grown at 2,400 °C (vs 1,414 °C for Si), are so hard they're cut with lasers, and a 200 mm SiC wafer still costs ~10× a silicon one — everything you learned in the Chip Journey applies, just harder.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PE-3 : ANALOG ============ -->
+<section class="stage container" id="pe-analog">
+  <div class="stage-header reveal">
+    <span class="stage-num">PE · 03 ANALOG POWER</span>
+    <h2>Analog: The Linear Regulator 🎚️</h2>
+    <p class="stage-tag">Smooth, silent, simple — and it pays for all three in heat.</p>
+  </div>
+  <div class="stage-body">
+    <div class="stage-text reveal">
+      <h3>A transistor as a smart resistor</h3>
+      <p>A linear regulator (like the classic 7805 or a modern LDO) puts a transistor in series with the load and <em>continuously</em> adjusts how hard it conducts, so the output stays at exactly V<sub>out</sub> no matter what the input does. An error amplifier compares the output against a reference and closes the loop thousands of times per second — pure analog feedback.</p>
+      <div class="formula">η<sub>linear</sub> = V<sub>out</sub> / V<sub>in</sub> &nbsp;·&nbsp; P<sub>heat</sub> = (V<sub>in</sub> − V<sub>out</sub>) × I<sub>load</sub></div>
+      <p>Drop 12 V to 3.3 V at 1 A and the regulator dissipates 8.7 W — more heat than useful power! That's why linear is reserved for <strong>low currents and small voltage drops</strong>: audio circuits, sensor rails, RF stages, and the final clean-up stage after a noisy switcher.</p>
+      <ol class="step-list">
+        <li><strong>Reference</strong> — a bandgap circuit makes a rock-stable ~1.2 V.</li>
+        <li><strong>Compare</strong> — the error amp measures V<sub>out</sub> against it.</li>
+        <li><strong>Adjust</strong> — the pass transistor conducts more or less, instantly.</li>
+        <li><strong>Repeat</strong> — continuous, no switching, no ripple, no EMI.</li>
+      </ol>
+      <div class="term-chips">
+        <span class="chip">LDO</span><span class="chip">Pass transistor</span><span class="chip">Error amplifier</span><span class="chip">Dropout voltage</span><span class="chip">PSRR</span><span class="chip">Heatsink</span>
+      </div>
+    </div>
+    <figure class="stage-figure reveal">
+      <div class="tool-panel" style="margin-top:0; box-shadow:none;">
+        <h3>🎛️ Linear vs Switching — feel the heat</h3>
+        <p>Same job, two philosophies. Drag the sliders and compare what each wastes.</p>
+        <div class="control-row">
+          <label>Input voltage V<sub>in</sub> <output id="outVin">12.0 V</output></label>
+          <input type="range" id="inVin" min="5" max="24" step="0.5" value="12"/>
+        </div>
+        <div class="control-row">
+          <label>Output voltage V<sub>out</sub> <output id="outVout">3.3 V</output></label>
+          <input type="range" id="inVout" min="1" max="12" step="0.1" value="3.3"/>
+        </div>
+        <div class="control-row">
+          <label>Load current <output id="outIload">1.0 A</output></label>
+          <input type="range" id="inIload" min="0.1" max="3" step="0.1" value="1"/>
+        </div>
+        <div class="vs-grid">
+          <div class="vs-col">
+            <h4>🎚️ Linear (LDO)</h4>
+            <div class="eff-bar"><i id="barLin" style="background:var(--bad); width:28%"></i></div>
+            <div class="eff-num" id="effLin">28%</div>
+            <div class="eff-sub">heat: <b id="heatLin">8.7 W</b> · <span id="heatLinNote">🔥 needs a heatsink</span></div>
+          </div>
+          <div class="vs-col">
+            <h4>⚡ Switching (buck)</h4>
+            <div class="eff-bar"><i id="barSw" style="background:var(--good); width:94%"></i></div>
+            <div class="eff-num" id="effSw">94%</div>
+            <div class="eff-sub">heat: <b id="heatSw">0.2 W</b> · <span id="heatSwNote">😎 barely warm</span></div>
+          </div>
+        </div>
+        <div class="verdict" id="linVerdict" style="margin-top:16px;">
+          <div class="v-title">Verdict</div><span id="linVerdictText"></span>
+        </div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ PE-4 : DIGITAL / BUCK ============ -->
+<section class="stage container" id="pe-digital">
+  <div class="stage-header reveal">
+    <span class="stage-num">PE · 04 DIGITAL POWER</span>
+    <h2>Digital: The Buck Converter Playground 🕹️</h2>
+    <p class="stage-tag">The most-manufactured power circuit on Earth — billions made every year. Drive one yourself.</p>
+  </div>
+  <div class="stage-body rev">
+    <figure class="stage-figure reveal">
+      <svg class="dgm" viewBox="0 0 460 260" role="img" aria-label="Buck converter circuit with animated switch, inductor, capacitor and load">
+        <!-- Vin battery -->
+        <g>
+          <line x1="34" y1="90" x2="34" y2="150" stroke="var(--dgm-label)" stroke-width="2"/>
+          <line x1="22" y1="104" x2="46" y2="104" stroke="var(--dgm-label)" stroke-width="3.5"/>
+          <line x1="27" y1="120" x2="41" y2="120" stroke="var(--dgm-label)" stroke-width="2"/>
+          <text x="34" y="176" text-anchor="middle" font-size="10.5" class="t-strong" id="buckVinLbl">12 V</text>
+        </g>
+        <!-- top rail to switch -->
+        <path d="M34 90 V 60 H 120" stroke="var(--dgm-label)" stroke-width="2.4" fill="none"/>
+        <!-- switch (animated) -->
+        <g id="buckSwitch">
+          <circle cx="124" cy="60" r="4" fill="var(--accent)"/>
+          <line id="buckSwArm" x1="124" y1="60" x2="168" y2="38" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="172" cy="60" r="4" fill="var(--accent)"/>
+          <text x="146" y="24" text-anchor="middle" font-size="10" class="t-accent" id="buckSwLbl">MOSFET (PWM)</text>
+        </g>
+        <!-- diode to ground -->
+        <path d="M172 60 H 200" stroke="var(--dgm-label)" stroke-width="2.4"/>
+        <g>
+          <line x1="200" y1="60" x2="200" y2="150" stroke="var(--dgm-label)" stroke-width="2.4"/>
+          <path d="M191 100 L 209 100 L 200 118 Z" fill="var(--dgm-label)"/>
+          <line x1="191" y1="118" x2="209" y2="118" stroke="var(--dgm-label)" stroke-width="2.5"/>
+          <text x="222" y="112" font-size="9.5">diode</text>
+        </g>
+        <!-- inductor -->
+        <path d="M200 60 H 236 q7 -14 14 0 q7 -14 14 0 q7 -14 14 0 q7 -14 14 0 H 306" fill="none" stroke="var(--accent-2)" stroke-width="2.6"/>
+        <text x="264" y="40" text-anchor="middle" font-size="10" class="t-amber">inductor L</text>
+        <!-- cap -->
+        <g>
+          <line x1="330" y1="60" x2="330" y2="96" stroke="var(--dgm-label)" stroke-width="2.4"/>
+          <line x1="316" y1="96" x2="344" y2="96" stroke="var(--dgm-label)" stroke-width="3"/>
+          <line x1="316" y1="106" x2="344" y2="106" stroke="var(--dgm-label)" stroke-width="3"/>
+          <line x1="330" y1="106" x2="330" y2="150" stroke="var(--dgm-label)" stroke-width="2.4"/>
+          <text x="354" y="106" font-size="9.5">cap C</text>
+        </g>
+        <path d="M306 60 H 400" stroke="var(--dgm-label)" stroke-width="2.4"/>
+        <!-- LED load -->
+        <g id="buckLoad">
+          <circle cx="400" cy="105" r="17" fill="var(--accent-2)" id="buckLED" opacity="0.55"/>
+          <circle cx="400" cy="105" r="24" fill="var(--accent-2)" id="buckGlow" opacity="0.14"/>
+          <line x1="400" y1="60" x2="400" y2="88" stroke="var(--dgm-label)" stroke-width="2.4"/>
+          <line x1="400" y1="122" x2="400" y2="150" stroke="var(--dgm-label)" stroke-width="2.4"/>
+          <text x="400" y="182" text-anchor="middle" font-size="10">load</text>
+        </g>
+        <!-- ground rail -->
+        <path d="M34 150 H 400" stroke="var(--dgm-label)" stroke-width="2.4"/>
+        <!-- Vout meter -->
+        <rect x="290" y="196" width="140" height="40" rx="9" fill="var(--bg-inset)" stroke="var(--dgm-si)" stroke-width="1.6"/>
+        <text x="360" y="212" text-anchor="middle" font-size="9" class="t-accent">VOUT (average)</text>
+        <text x="360" y="229" text-anchor="middle" font-size="14" class="t-accent" font-weight="700" id="buckVoutLbl">6.0 V</text>
+      </svg>
+      <div class="scope">
+        <svg viewBox="0 0 440 120" id="buckScope" aria-label="PWM and output voltage waveforms">
+          <g stroke="var(--line)" stroke-width="1">
+            <line x1="0" y1="30" x2="440" y2="30"/><line x1="0" y1="60" x2="440" y2="60"/><line x1="0" y1="90" x2="440" y2="90"/>
+          </g>
+          <polyline id="scopePWM" fill="none" stroke="#8b7cf6" stroke-width="2"/>
+          <polyline id="scopeVout" fill="none" stroke="#5eead4" stroke-width="2.2"/>
+          <text x="8" y="18" font-size="9" fill="#8b7cf6">switch node (PWM)</text>
+          <text x="8" y="110" font-size="9" fill="#5eead4">Vout (filtered)</text>
+        </svg>
+        <div class="scope-label">virtual oscilloscope</div>
+      </div>
+      <figcaption style="text-align:center; font-size:0.8rem; color:var(--text-faint); font-style:italic; margin-top:10px;">V<sub>out</sub> = D × V<sub>in</sub> — the inductor and capacitor smooth the chopped input into clean DC.</figcaption>
+    </figure>
+    <div class="stage-text reveal">
+      <h3>Chop, then smooth</h3>
+      <p>The buck converter steps voltage <em>down</em> with almost no loss. A MOSFET chops the input at 100 kHz–2 MHz; the fraction of time it's ON is the <strong>duty cycle D</strong>. The inductor resists current changes and the capacitor holds the voltage steady, so the load sees only the <strong>average</strong>:</p>
+      <div class="formula">V<sub>out</sub> = D × V<sub>in</sub> &nbsp;&nbsp;(e.g. 50% duty of 12 V → 6 V)</div>
+      <div class="tool-panel" style="padding:20px; margin-top:18px;">
+        <div class="control-row">
+          <label>Duty cycle D <output id="outDuty">50%</output></label>
+          <input type="range" id="inDuty" min="5" max="95" step="1" value="50"/>
+        </div>
+        <div class="control-row">
+          <label>Input voltage <output id="outBVin">12 V</output></label>
+          <input type="range" id="inBVin" min="5" max="24" step="1" value="12"/>
+        </div>
+        <div class="pill-row">
+          <span class="pill">V<sub>out</sub> ≈ <b id="pillVout">6.0 V</b></span>
+          <span class="pill p-amber">ripple <b id="pillRipple">±0.2 V</b></span>
+          <span class="pill p-good">η ≈ <b>95%</b></span>
+        </div>
+      </div>
+      <h3>The digital control loop</h3>
+      <p>In modern designs a tiny controller measures V<sub>out</sub> every switching cycle and nudges D via a <strong>PID algorithm</strong> — power regulation as a software problem. That's "digital power": the same circuit, but the brain is code. It also opens the door to something smarter than PID — which is exactly where the <a href="ai-semiconductors.html">AI module</a> picks up.</p>
+      <div class="term-chips">
+        <span class="chip">Buck / Boost / Buck-boost</span><span class="chip">Duty cycle</span><span class="chip">Ripple</span><span class="chip">CCM / DCM</span><span class="chip">PID loop</span><span class="chip">VRM</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PE-5 : BREADBOARD LAB ============ -->
+<section class="stage container" id="pe-breadboard">
+  <div class="stage-header reveal">
+    <span class="stage-num">PE · 05 HANDS-ON</span>
+    <h2>Virtual Breadboard Lab 🧑‍🔬</h2>
+    <p class="stage-tag">The circuits above, wired the way you'd actually build them — poke them and watch the instruments respond.</p>
+  </div>
+  <div class="tool-panel reveal">
+    <div class="bb-experiments" id="bbTabs">
+      <button class="litho-btn active" data-exp="dimmer">🔆 Experiment 1 · PWM LED dimmer</button>
+      <button class="litho-btn" data-exp="rectifier">🌊 Experiment 2 · AC → DC rectifier</button>
+    </div>
+    <div class="tool-grid">
+      <div class="bb-wrap">
+        <svg id="bbSvg" viewBox="0 0 460 300" aria-label="Virtual breadboard with circuit"></svg>
+        <div>
+          <span class="readout"><span class="r-label" id="ro1Label">Vout</span><span class="r-value" id="ro1Value">—</span></span>
+          <span class="readout"><span class="r-label" id="ro2Label">duty</span><span class="r-value" id="ro2Value">—</span></span>
+        </div>
+      </div>
+      <div>
+        <div id="bbControlsDimmer">
+          <p style="color:var(--text-soft); font-size:0.9rem; margin-top:0;">A microcontroller drives a MOSFET gate with PWM; the MOSFET switches the LED. Average current — and brightness — follows duty cycle. This is exactly how screen backlights and LED bulbs dim.</p>
+          <div class="control-row">
+            <label>PWM duty cycle <output id="outBBduty">60%</output></label>
+            <input type="range" id="inBBduty" min="0" max="100" step="1" value="60"/>
+          </div>
+          <div class="control-row">
+            <label>PWM frequency (scope view) <output id="outBBfreq">1 kHz</output></label>
+            <input type="range" id="inBBfreq" min="1" max="10" step="1" value="4"/>
+          </div>
+        </div>
+        <div id="bbControlsRect" style="display:none;">
+          <p style="color:var(--text-soft); font-size:0.9rem; margin-top:0;">Four diodes flip the negative half of the AC wave upward; the capacitor fills the gaps. Bigger capacitor → smaller ripple. This front-end lives inside every wall adapter ever made.</p>
+          <div class="control-row">
+            <label>Smoothing capacitor <output id="outBBcap">470 µF</output></label>
+            <input type="range" id="inBBcap" min="10" max="2200" step="10" value="470"/>
+          </div>
+          <div class="control-row">
+            <label>Load resistance <output id="outBBload">220 Ω</output></label>
+            <input type="range" id="inBBload" min="47" max="1000" step="1" value="220"/>
+          </div>
+        </div>
+        <div class="scope" style="margin-top:14px;">
+          <svg viewBox="0 0 440 130" id="bbScope">
+            <g stroke="var(--line)" stroke-width="1">
+              <line x1="0" y1="33" x2="440" y2="33"/><line x1="0" y1="65" x2="440" y2="65"/><line x1="0" y1="98" x2="440" y2="98"/>
+            </g>
+            <polyline id="bbTrace1" fill="none" stroke="#8b7cf6" stroke-width="2"/>
+            <polyline id="bbTrace2" fill="none" stroke="#5eead4" stroke-width="2.2"/>
+            <text x="8" y="16" font-size="9" fill="#8b7cf6" id="bbTr1Lbl">gate drive</text>
+            <text x="8" y="124" font-size="9" fill="#5eead4" id="bbTr2Lbl">LED current</text>
+          </svg>
+          <div class="scope-label">virtual oscilloscope — both channels live</div>
+        </div>
+        <div class="fact-card" style="margin-top:16px;"><div class="fc-title">🔧 Build it for real</div>
+          <span id="bbBuildNote">Parts: any MCU (Arduino/Pi Pico), logic-level MOSFET (e.g. IRLZ44N), LED + 220 Ω resistor. PWM pin → gate, LED on the drain. Total cost: a few dollars.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PE-6 : APPLICATIONS ============ -->
+<section class="stage container" id="pe-apps">
+  <div class="stage-header reveal">
+    <span class="stage-num">PE · 06 APPLICATIONS</span>
+    <h2>Where the Joules Flow 🌍</h2>
+    <p class="stage-tag">Spot the converter: once you know the patterns, you'll see power electronics everywhere.</p>
+  </div>
+  <div class="cardlets reveal">
+    <div class="cardlet"><div class="cl-icon">🚗</div><h4>Electric Vehicles</h4><p>SiC traction inverter (DC→3-phase AC, 100–300 kW), on-board charger, 800 V→12 V DC-DC, battery management.</p><span class="cl-tag">SiC · IGBT</span></div>
+    <div class="cardlet"><div class="cl-icon">☀️</div><h4>Solar & Storage</h4><p>MPPT boost converters squeeze max power from panels; string inverters push it onto the grid; bidirectional DC-DC charges batteries.</p><span class="cl-tag">MPPT · Inverter</span></div>
+    <div class="cardlet"><div class="cl-icon">📱</div><h4>Fast Chargers</h4><p>GaN flyback converters at MHz frequencies: 65–240 W in pocket size, with USB-PD negotiating voltage digitally.</p><span class="cl-tag">GaN · Flyback</span></div>
+    <div class="cardlet"><div class="cl-icon">🖥️</div><h4>Data Centers & AI</h4><p>48 V rack power, multi-phase VRMs feeding 1,000+ W GPUs at ~1 V — thousands of amps per board, efficiency is everything.</p><span class="cl-tag">Multiphase buck</span></div>
+    <div class="cardlet"><div class="cl-icon">🏭</div><h4>Motor Drives</h4><p>Variable-frequency drives (IGBT inverters) control pumps, fans, compressors — the biggest industrial energy saver ever deployed.</p><span class="cl-tag">VFD · IGBT</span></div>
+    <div class="cardlet"><div class="cl-icon">⚡</div><h4>Grid & HVDC</h4><p>Thyristor and IGBT valves move gigawatts between countries over high-voltage DC links; STATCOMs stabilise the grid.</p><span class="cl-tag">GW scale</span></div>
+  </div>
+  <div class="fact-card reveal" style="max-width:820px; margin:26px auto 0;"><div class="fc-title">➡️ Continue the journey</div>
+    Every one of these systems now generates torrents of sensor data — currents, temperatures, vibrations. Turning that data into fewer failures and higher efficiency is the job of machine learning. Continue to <a href="ai-semiconductors.html"><strong>AI × Semiconductors →</strong></a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-brand">Sand → Silicon · Power Electronics</div>
+  <p><a href="index.html">← Back to the Chip Journey</a> · <a href="ai-semiconductors.html">AI × Semiconductors →</a><br/>
+  An open educational project · <a href="https://github.com/jambesh/sand-to-silicon">Source on GitHub</a></p>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/power.js"></script>
+</body>
+</html>
