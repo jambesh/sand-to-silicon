@@ -26,6 +26,13 @@
 
 Plus a **quiz**, a **fab glossary**, and a roadmap.
 
+## Expansion modules
+
+| Module | Highlights |
+|--------|-----------|
+| ⚡ [Power Electronics](power-electronics.html) | Analog (linear) vs digital (switching) power, device toolbox (diode → MOSFET → IGBT → SiC/GaN) with an interactive power-frequency map, **linear-vs-switching heat calculator**, **buck-converter playground** with live PWM oscilloscope, and a **virtual breadboard lab** (PWM LED dimmer + bridge rectifier with real formulas) |
+| 🤖 [AI × Semiconductors](ai-semiconductors.html) | The sense→learn→predict→act loop; AI for power electronics (predictive maintenance, RL control, battery management) with a **live converter health-monitor demo** (streaming anomaly detection, tunable σ threshold); **wafer-map pattern classifier** (ring/scratch/center/random → root cause); **test-limits explorer** (overkill vs escapes, spec-box vs ML boundary) |
+
 ## Features
 
 - 🌗 Light / dark mode (remembers your choice, respects system preference)
@@ -46,9 +53,9 @@ python3 -m http.server 8080
 
 ## Roadmap
 
-- ⚡ **Power Electronics** — SiC/GaN wide-bandgap devices, MOSFETs, IGBTs, converters
-- 🤖 **AI × Semiconductors** — ML for defect detection, yield prediction, litho OPC; silicon for AI
-- 🧲 **Device Physics deep-dives** — interactive band diagrams, FinFET → GAA
+- ⚡ **Power Electronics** — ✅ shipped
+- 🤖 **AI × Semiconductors** — ✅ shipped
+- 🧲 **Device Physics deep-dives** — interactive band diagrams, FinFET → GAA (planned)
 
 Contributions and corrections welcome — open an issue or PR.
 
