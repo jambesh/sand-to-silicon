@@ -293,6 +293,10 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
   text-transform: uppercase; margin-bottom: 6px;
 }
 
+/* themed inline heading icon (replaces emoji that render poorly on some platforms) */
+.h-icon { width: 1em; height: 1em; vertical-align: -0.1em; display: inline-block; }
+.m-icon .h-icon { width: 1.15em; height: 1.15em; }
+
 /* side-by-side fact cards */
 .fact-row { display: grid; grid-template-columns: 1fr 1.22fr; gap: 14px; align-items: stretch; }
 .fact-row .fact-card { margin-top: 22px; }
