@@ -293,6 +293,67 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
   text-transform: uppercase; margin-bottom: 6px;
 }
 
+/* side-by-side fact cards */
+.fact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: stretch; }
+.fact-row .fact-card { margin-top: 22px; }
+@media (max-width: 1100px) { .fact-row { grid-template-columns: 1fr; } .fact-row .fact-card + .fact-card { margin-top: 0; } }
+
+.explore-link {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+  font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer;
+  color: var(--accent); background: var(--chip-bg);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-radius: 999px; padding: 6px 15px; transition: all 0.2s;
+}
+.explore-link:hover { box-shadow: 0 0 12px var(--glow); transform: translateY(-1px); }
+
+/* ---- Modal ---- */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200; display: none;
+  align-items: center; justify-content: center; padding: 18px;
+  background: rgba(4, 7, 14, 0.65); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  position: relative; width: 100%; max-width: 1040px; max-height: 92vh; overflow-y: auto;
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: 22px;
+  padding: 28px 28px 24px; box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+  animation: modal-in 0.25s ease;
+}
+@keyframes modal-in { from { opacity: 0; transform: translateY(18px) scale(0.98); } to { opacity: 1; transform: none; } }
+.modal h3 { margin: 0 0 4px; font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
+.modal .modal-sub { color: var(--text-soft); font-size: 0.88rem; margin: 2px 0 18px; }
+.modal-close {
+  position: absolute; top: 16px; right: 16px; width: 38px; height: 38px;
+  border-radius: 10px; border: 1px solid var(--line); background: var(--bg-card);
+  color: var(--text); font-size: 1.05rem; cursor: pointer; transition: all 0.2s;
+}
+.modal-close:hover { border-color: var(--accent-4); color: var(--accent-4); }
+.modal-grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 860px) { .modal-grid { grid-template-columns: 1fr; } }
+
+/* world map */
+.world-map { width: 100%; height: auto; display: block; background: var(--bg-inset); border-radius: 16px; border: 1px solid var(--line); }
+.world-map .land { fill: var(--dgm-fill); stroke: var(--dgm-stroke); stroke-width: 1; opacity: 0.9; }
+.world-map .prod-bubble { fill: var(--accent); fill-opacity: 0.26; stroke: var(--accent); stroke-width: 1.6; }
+.world-map .prod-bubble.top1 { fill: var(--accent-2); fill-opacity: 0.32; stroke: var(--accent-2); stroke-width: 2; }
+.world-map .prod-dot { fill: var(--text-faint); opacity: 0.55; }
+.world-map .prod-label { fill: var(--text); font-size: 11px; font-weight: 600; }
+.world-map .prod-pct { fill: var(--accent); font-size: 10px; font-weight: 700; }
+.world-map .prod-pct.top1 { fill: var(--accent-2); font-size: 13px; }
+.world-map .minor-label { fill: var(--text-faint); font-size: 9px; }
+
+/* rank list */
+.rank-list { display: flex; flex-direction: column; gap: 9px; }
+.rank-item { font-size: 0.82rem; }
+.rank-item .r-head { display: flex; justify-content: space-between; margin-bottom: 3px; color: var(--text); font-weight: 600; }
+.rank-item .r-head .pct { font-family: "Space Grotesk", monospace; color: var(--accent); }
+.rank-item:first-child .r-head .pct { color: var(--accent-2); }
+.rank-item .r-bar { height: 8px; border-radius: 4px; background: var(--bg-inset); overflow: hidden; }
+.rank-item .r-bar > i { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-3)); }
+.rank-item:first-child .r-bar > i { background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
+.modal-note { margin-top: 16px; font-size: 0.74rem; color: var(--text-faint); }
+
 /* figure / diagram panel */
 .stage-figure {
   position: sticky; top: 86px;

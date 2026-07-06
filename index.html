@@ -143,8 +143,14 @@
       <div class="term-chips">
         <span class="chip">Quartzite</span><span class="chip">SiO₂</span><span class="chip">Arc furnace</span><span class="chip">MG-Si</span><span class="chip">Carbothermic reduction</span>
       </div>
-      <div class="fact-card"><div class="fc-title">💡 Did you know?</div>
-        Producing 1 tonne of silicon consumes roughly 11–13&nbsp;MWh of electricity — which is why smelters cluster near cheap hydropower.
+      <div class="fact-row">
+        <div class="fact-card"><div class="fc-title">💡 Did you know?</div>
+          Producing 1 tonne of silicon consumes roughly 11–13&nbsp;MWh of electricity — which is why smelters cluster near cheap hydropower.
+        </div>
+        <div class="fact-card"><div class="fc-title">🌍 Who makes the silicon?</div>
+          <strong>China dominates with ~70%</strong> of world silicon production. Russia (~6%), Brazil (~5%), Norway (~4%) and the USA (~3.5%) follow far behind.<br/>
+          <button class="explore-link" id="openSiliconMap" aria-haspopup="dialog">🗺️ Explore more →</button>
+        </div>
       </div>
     </div>
     <figure class="stage-figure reveal">
@@ -1143,6 +1149,129 @@
 </section>
 
 </main>
+
+<!-- ================= SILICON PRODUCTION MAP MODAL ================= -->
+<div class="modal-overlay" id="siliconMapModal" role="dialog" aria-modal="true" aria-labelledby="siliconMapTitle">
+  <div class="modal">
+    <button class="modal-close" id="closeSiliconMap" aria-label="Close map">✕</button>
+    <h3 id="siliconMapTitle">🌍 World Silicon Production by Country</h3>
+    <p class="modal-sub">Bubble area ∝ share of global output (~9 million tonnes/year of metallurgical-grade silicon). Top 10 producers highlighted; smaller producers shown as faint dots.</p>
+    <div class="modal-grid">
+      <div>
+        <svg class="world-map" viewBox="0 0 900 460" role="img" aria-label="Stylized world map with silicon production shares as proportional bubbles">
+          <!-- graticule hints -->
+          <line x1="0" y1="228" x2="900" y2="228" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 7"/>
+          <!-- ======= stylized continents ======= -->
+          <g class="land">
+            <!-- North America -->
+            <path d="M55,95 Q80,58 130,60 Q200,46 258,62 Q298,72 290,100 Q302,120 275,140 Q272,165 255,185 Q236,205 226,225 Q240,240 250,254 L236,260 Q216,242 208,222 Q186,202 170,176 Q120,160 90,130 Q60,116 55,95 Z"/>
+            <!-- Greenland -->
+            <path d="M300,42 Q330,28 352,45 Q347,72 325,82 Q303,72 300,42 Z"/>
+            <!-- South America -->
+            <path d="M250,258 Q282,250 306,264 Q342,274 346,306 Q336,346 316,376 Q301,402 290,392 Q278,360 282,330 Q270,300 258,284 Q248,270 250,258 Z"/>
+            <!-- Iceland -->
+            <path d="M392,58 q14,-9 25,0 q-2,13 -15,13 q-12,-4 -10,-13 Z"/>
+            <!-- UK -->
+            <path d="M430,90 q11,-7 16,2 q-2,11 -13,11 q-9,-6 -3,-13 Z"/>
+            <!-- Europe + Scandinavia -->
+            <path d="M460,48 Q478,42 488,58 Q492,80 480,96 Q470,102 466,92 Q458,72 460,48 Z"/>
+            <path d="M432,108 Q452,96 472,102 Q496,96 516,106 Q526,120 516,132 Q496,142 476,140 Q452,146 440,134 Q430,124 432,108 Z"/>
+            <!-- Africa -->
+            <path d="M445,156 Q470,144 500,152 Q532,160 542,186 Q556,216 540,246 Q530,286 510,320 Q496,346 480,340 Q462,320 458,290 Q446,260 440,226 Q432,190 445,156 Z"/>
+            <!-- Asia (incl. Russia, India, SE Asia mainland) -->
+            <path d="M520,60 Q580,38 660,46 Q742,44 802,70 Q832,90 820,116 Q836,140 800,152 Q782,176 746,170 Q732,196 706,192 Q692,216 702,242 Q680,236 670,210 Q640,200 626,180 Q590,170 570,150 Q540,140 530,120 Q514,90 520,60 Z"/>
+            <!-- Japan -->
+            <path d="M812,118 q15,10 10,32 q-9,-2 -13,-15 q-4,-11 3,-17 Z"/>
+            <!-- Indonesia / maritime SE Asia -->
+            <path d="M690,258 q32,-7 62,4 q-10,13 -42,11 q-21,-2 -20,-15 Z"/>
+            <!-- Australia -->
+            <path d="M755,310 Q790,296 822,315 Q837,336 820,356 Q790,369 765,358 Q747,340 755,310 Z"/>
+            <!-- New Zealand -->
+            <path d="M856,380 q9,4 6,15 q-9,0 -11,-8 q0,-6 5,-7 Z"/>
+          </g>
+          <!-- ======= minor producers (de-emphasized) ======= -->
+          <g>
+            <circle class="prod-dot" cx="190" cy="96" r="3.5"/><text class="minor-label" x="190" y="86" text-anchor="middle">Canada</text>
+            <circle class="prod-dot" cx="438" cy="137" r="3.5"/><text class="minor-label" x="438" y="150" text-anchor="middle">Spain</text>
+            <circle class="prod-dot" cx="645" cy="190" r="3.5"/><text class="minor-label" x="656" y="202" text-anchor="middle">India</text>
+            <circle class="prod-dot" cx="790" cy="332" r="3.5"/><text class="minor-label" x="790" y="320" text-anchor="middle">Australia</text>
+            <circle class="prod-dot" cx="510" cy="336" r="3.5"/><text class="minor-label" x="510" y="352" text-anchor="middle">South Africa</text>
+            <circle class="prod-dot" cx="248" cy="330" r="3.5"/><text class="minor-label" x="248" y="344" text-anchor="middle">Bolivia</text>
+          </g>
+          <!-- ======= top 10 producers ======= -->
+          <g>
+            <!-- 1 China ~70% -->
+            <circle class="prod-bubble top1" cx="712" cy="151" r="34"/>
+            <text class="prod-label" x="712" y="147" text-anchor="middle" font-size="13">China</text>
+            <text class="prod-pct top1" x="712" y="163" text-anchor="middle">~70%</text>
+            <!-- 2 Russia ~6% -->
+            <circle class="prod-bubble" cx="630" cy="82" r="10"/>
+            <text class="prod-label" x="630" y="68" text-anchor="middle">Russia</text>
+            <text class="prod-pct" x="648" y="86">6%</text>
+            <!-- 3 Brazil ~5% -->
+            <circle class="prod-bubble" cx="315" cy="300" r="9.2"/>
+            <text class="prod-label" x="315" y="286" text-anchor="middle">Brazil</text>
+            <text class="prod-pct" x="332" y="304">5%</text>
+            <!-- 4 Norway ~4% -->
+            <circle class="prod-bubble" cx="473" cy="66" r="8.2"/>
+            <text class="prod-label" x="473" y="50" text-anchor="middle">Norway</text>
+            <text class="prod-pct" x="488" y="70">4%</text>
+            <!-- 5 USA ~3.5% -->
+            <circle class="prod-bubble" cx="205" cy="140" r="7.7"/>
+            <text class="prod-label" x="205" y="126" text-anchor="middle">USA</text>
+            <text class="prod-pct" x="220" y="144">3.5%</text>
+            <!-- 6 Malaysia ~1.7% -->
+            <circle class="prod-bubble" cx="706" cy="246" r="5.4"/>
+            <text class="prod-label" x="740" y="243">Malaysia</text>
+            <text class="prod-pct" x="740" y="255">1.7%</text>
+            <!-- 7 France ~1.5% -->
+            <circle class="prod-bubble" cx="450" cy="122" r="5"/>
+            <text class="prod-label" x="414" y="120" text-anchor="end">France</text>
+            <text class="prod-pct" x="414" y="132" text-anchor="end">1.5%</text>
+            <!-- 8 Kazakhstan ~1.5% -->
+            <circle class="prod-bubble" cx="615" cy="112" r="5"/>
+            <text class="prod-label" x="628" y="109">Kazakhstan</text>
+            <text class="prod-pct" x="628" y="121">1.5%</text>
+            <!-- 9 Iceland ~1.3% -->
+            <circle class="prod-bubble" cx="402" cy="63" r="4.7"/>
+            <text class="prod-label" x="386" y="52" text-anchor="end">Iceland</text>
+            <text class="prod-pct" x="386" y="64" text-anchor="end">1.3%</text>
+            <!-- 10 Germany ~1% -->
+            <circle class="prod-bubble" cx="480" cy="104" r="4.1"/>
+            <text class="prod-label" x="497" y="100">Germany</text>
+            <text class="prod-pct" x="497" y="112">1%</text>
+          </g>
+          <!-- legend -->
+          <g transform="translate(20,398)">
+            <circle class="prod-bubble" cx="10" cy="8" r="8"/>
+            <text x="26" y="12" font-size="10.5" fill="var(--text-soft)">top-10 producer (area ∝ share)</text>
+            <circle class="prod-dot" cx="230" cy="8" r="3.5"/>
+            <text x="242" y="12" font-size="10.5" fill="var(--text-soft)">smaller producer</text>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <div class="rank-list">
+          <div class="rank-item"><div class="r-head"><span>🇨🇳 China</span><span class="pct">~70%</span></div><div class="r-bar"><i style="width:100%"></i></div></div>
+          <div class="rank-item"><div class="r-head"><span>🇷🇺 Russia</span><span class="pct">~6%</span></div><div class="r-bar"><i style="width:8.6%"></i></div></div>
+          <div class="rank-item"><div class="r-head"><span>🇧🇷 Brazil</span><span class="pct">~5%</span></div><div class="r-bar"><i style="width:7.1%"></i></div></div>
+          <div class="rank-item"><div class="r-head"><span>🇳🇴 Norway</span><span class="pct">~4%</span></div><div class="r-bar"><i style="width:5.7%"></i></div></div>
+          <div class="rank-item"><div class="r-head"><span>🇺🇸 USA</span><span class="pct">~3.5%</span></div><div class="r-bar"><i style="width:5%"></i></div></div>
+          <div class="rank-item"><div class="r-head"><span>🇲🇾 Malaysia</span><span class="pct">~1.7%</span></div><div class="r-bar"><i style="width:2.4%"></i></div></div>
+          <div class="rank-item"><div class="r-head"><span>🇫🇷 France</span><span class="pct">~1.5%</span></div><div class="r-bar"><i style="width:2.1%"></i></div></div>
+          <div class="rank-item"><div class="r-head"><span>🇰🇿 Kazakhstan</span><span class="pct">~1.5%</span></div><div class="r-bar"><i style="width:2.1%"></i></div></div>
+          <div class="rank-item"><div class="r-head"><span>🇮🇸 Iceland</span><span class="pct">~1.3%</span></div><div class="r-bar"><i style="width:1.9%"></i></div></div>
+          <div class="rank-item"><div class="r-head"><span>🇩🇪 Germany</span><span class="pct">~1%</span></div><div class="r-bar"><i style="width:1.4%"></i></div></div>
+          <div class="rank-item"><div class="r-head"><span>🌐 Rest of world</span><span class="pct" style="color:var(--text-faint)">~4.5%</span></div><div class="r-bar"><i style="width:6.4%; background:var(--text-faint)"></i></div></div>
+        </div>
+        <div class="fact-card" style="margin-top:18px;"><div class="fc-title">⚗️ And chip-grade?</div>
+          Semiconductor-grade <strong>polysilicon</strong> is even more concentrated: China holds ~80%+ of capacity, with Germany (Wacker), the USA and Japan supplying most of the ultra-pure remainder used for chips.
+        </div>
+        <p class="modal-note">Approximate shares of metallurgical-grade silicon output (incl. silicon content of ferrosilicon), based on USGS Mineral Commodity Summaries. Map is stylized, not to cartographic scale.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="foot-brand">Sand → Silicon</div>

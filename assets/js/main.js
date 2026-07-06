@@ -320,6 +320,32 @@
     }
   })();
 
+  /* ---------------- Silicon production map modal ---------------- */
+  (function siliconMap() {
+    const modal = document.getElementById("siliconMapModal");
+    const openBtn = document.getElementById("openSiliconMap");
+    if (!modal || !openBtn) return;
+    const closeBtn = document.getElementById("closeSiliconMap");
+    let lastFocus = null;
+    function open() {
+      lastFocus = document.activeElement;
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      closeBtn.focus();
+    }
+    function close() {
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+      if (lastFocus) lastFocus.focus();
+    }
+    openBtn.addEventListener("click", open);
+    closeBtn.addEventListener("click", close);
+    modal.addEventListener("click", (e) => { if (e.target === modal) close(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("open")) close();
+    });
+  })();
+
   /* ---------------- Quiz ---------------- */
   (function quiz() {
     const panel = document.getElementById("quizPanel");
