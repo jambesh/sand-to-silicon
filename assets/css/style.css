@@ -294,11 +294,13 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
 }
 
 /* side-by-side fact cards */
-.fact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: stretch; }
+.fact-row { display: grid; grid-template-columns: 1fr 1.22fr; gap: 14px; align-items: stretch; }
 .fact-row .fact-card { margin-top: 22px; }
+.fact-row .fc-title { letter-spacing: 0.05em; white-space: nowrap; }
 @media (max-width: 1100px) { .fact-row { grid-template-columns: 1fr; } .fact-row .fact-card + .fact-card { margin-top: 0; } }
 
 .explore-link {
+  -webkit-appearance: none; appearance: none;
   display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
   font-family: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer;
   color: var(--accent); background: var(--chip-bg);
