@@ -1,8 +1,29 @@
-# Sand → Silicon 🏖️→💻
+# Sand → Silicon
 
 **An immersive, interactive journey through semiconductor manufacturing — from a grain of sand to a tested, packaged chip.**
 
-🌐 **Live site:** enable GitHub Pages on this repo (Settings → Pages → Deploy from branch → `main` / root) and it serves directly — no build step needed.
+Live site: https://jambesh.github.io/sand-to-silicon/
+
+```
+NOTE: The site is a fully static build — enable GitHub Pages on this repo
+(Settings > Pages > Deploy from branch > main / root) and it serves
+directly. No build step, no dependencies.
+```
+
+## The journey at a glance
+
+```
+ quartz sand ──► arc furnace ──► polysilicon ──► CZ crystal ──► wafers
+   (SiO2)         (98% Si)        (9N pure)       (ingot)         │
+                                                                   ▼
+                                          ┌──────────  the fab  ──────────┐
+                                          │  litho ► etch ► dope ► metal  │
+                                          │        (repeat ~100x)         │
+                                          └───────────────┬───────────────┘
+                                                          ▼
+ packaged chip ◄── final test ◄── dicing ◄── yield ◄── wafer probe
+    (binned)       (burn-in)     (pick good)  (models)   (ATE + needles)
+```
 
 ## What's inside
 
@@ -20,28 +41,38 @@
 | 08 | Doping & Implantation | Animated ion implanter, N/P junctions |
 | 09 | Interconnects (BEOL) | Damascene copper, the metal-stack skyscraper |
 | 10 | Wafer Test & Probing | Probe cards, WAT/PCM, wafer sort, bin maps |
-| 11 | Yield Engineering | **Interactive Yield Lab** — live wafer map, Poisson & Murphy models, cost per good die |
+| 11 | Yield Engineering | Interactive Yield Lab — live wafer map, Poisson & Murphy models, cost per good die |
 | 12 | Dicing & Packaging | Backgrind, dicing, wire bond vs flip-chip, 2.5D/3D |
 | 13 | Final Test & Binning | ATE, burn-in, speed binning |
 
-Plus a **quiz**, a **fab glossary**, and a roadmap.
+Plus a quiz, a fab glossary, and a roadmap.
 
 ## Expansion modules
 
 | Module | Highlights |
 |--------|-----------|
-| ⚡ [Power Electronics](power-electronics.html) | Analog (linear) vs digital (switching) power, device toolbox (diode → MOSFET → IGBT → SiC/GaN) with an interactive power-frequency map, **linear-vs-switching heat calculator**, **buck-converter playground** with live PWM oscilloscope, and a **virtual breadboard lab** (PWM LED dimmer + bridge rectifier with real formulas) |
-| 🤖 [AI × Semiconductors](ai-semiconductors.html) | The sense→learn→predict→act loop; AI for power electronics (predictive maintenance, RL control, battery management) with a **live converter health-monitor demo** (streaming anomaly detection, tunable σ threshold); **wafer-map pattern classifier** (ring/scratch/center/random → root cause); **test-limits explorer** (overkill vs escapes, spec-box vs ML boundary) |
+| [Power Electronics](power-electronics.html) | Analog (linear) vs digital (switching) power, device toolbox (diode → MOSFET → IGBT → SiC/GaN) with an interactive power-frequency map, linear-vs-switching heat calculator, buck-converter playground with live PWM oscilloscope, and a virtual breadboard lab (PWM LED dimmer + bridge rectifier with real formulas) |
+| [AI × Semiconductors](ai-semiconductors.html) | The sense → learn → predict → act loop; AI for power electronics (predictive maintenance, RL control, battery management) with a live converter health-monitor demo (streaming anomaly detection, tunable sigma threshold); wafer-map pattern classifier (ring/scratch/center/random → root cause); test-limits explorer (overkill vs escapes, spec-box vs ML boundary) |
 
 ## Features
 
-- 🌗 Light / dark mode (remembers your choice, respects system preference)
-- 🎞️ Animated SVG diagrams for every stage (pure CSS/SVG, no libraries)
-- 🧪 Interactive Yield Lab: die size / defect density / wafer cost sliders → dies-per-wafer, Murphy & Poisson yield, simulated wafer map
-- 🔦 Click-through photolithography simulator (coat → expose → develop → etch → strip)
-- 🧠 Self-check quiz with explanations
-- 📱 Fully responsive, respects `prefers-reduced-motion`
-- ⚡ Zero dependencies, zero build step — plain HTML/CSS/JS, perfect for GitHub Pages
+- Light / dark mode — remembers your choice, respects system preference
+- Animated SVG diagrams for every stage (pure CSS/SVG, no libraries)
+- Interactive Yield Lab: die size / defect density / wafer cost sliders drive dies-per-wafer, Murphy & Poisson yield, and a simulated wafer map
+
+  ```
+  Poisson:  Y = e^(-A*D0)
+  Murphy:   Y = ((1 - e^(-A*D0)) / (A*D0))^2
+
+  A  = die area (cm^2)
+  D0 = defect density (defects/cm^2)
+  ```
+
+- Click-through photolithography simulator (coat → expose → develop → etch → strip)
+- World silicon-production map: top-10 producing countries as proportional bubbles
+- Self-check quiz with explanations
+- Fully responsive; honors `prefers-reduced-motion`
+- Zero dependencies, zero build step — plain HTML/CSS/JS, ideal for GitHub Pages
 
 ## Run locally
 
@@ -51,11 +82,26 @@ python3 -m http.server 8080
 # then open http://localhost:8080
 ```
 
+## Project structure
+
+```
+.
+├── index.html               # the 13-stage chip journey + quiz + glossary
+├── power-electronics.html   # Power Electronics module
+├── ai-semiconductors.html   # AI x Semiconductors module
+└── assets/
+    ├── css/style.css        # theming via CSS variables (dark default / light)
+    └── js/
+        ├── main.js          # theme, scroll effects, yield lab, quiz, map modal
+        ├── power.js         # device map, buck playground, breadboard lab
+        └── ai.js            # anomaly monitor, wafer-map classifier, test limits
+```
+
 ## Roadmap
 
-- ⚡ **Power Electronics** — ✅ shipped
-- 🤖 **AI × Semiconductors** — ✅ shipped
-- 🧲 **Device Physics deep-dives** — interactive band diagrams, FinFET → GAA (planned)
+- Power Electronics — shipped
+- AI × Semiconductors — shipped
+- Device Physics deep-dives — interactive band diagrams, FinFET → GAA (planned)
 
 Contributions and corrections welcome — open an issue or PR.
 
